@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Lands - LandLanka | Premium Properties in Sri Lanka</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a472a;
+            --secondary: #d4af37;
+            --accent: #0d6efd;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loader-bee {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin: 0 auto 2rem;
+        }
+
+        .bee-body {
+            width: 60px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: fly 2s infinite ease-in-out;
+        }
+
+        .bee-wing {
+            width: 30px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+            animation: wingFlap 0.2s infinite alternate;
+        }
+
+        .bee-wing.left {
+            left: 10px;
+        }
+
+        .bee-wing.right {
+            right: 10px;
+            animation-delay: 0.1s;
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            animation: loading 2s ease-in-out forwards;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fly {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -60%); }
+        }
+
+        @keyframes wingFlap {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(0.8); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+            background: rgba(26, 71, 42, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        header.scrolled {
+            padding: 1rem 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        nav ul li a.active {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hero Banner */
+        .lands-hero {
+            height: 60vh;
+            background: linear-gradient(rgba(26, 71, 42, 0.8), rgba(26, 71, 42, 0.9)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .lands-hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .lands-hero-content p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            padding: 3rem 5%;
+            background: var(--light);
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .filter-select {
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-results {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--secondary);
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: var(--transition);
+            border: 2px solid var(--secondary);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .secondary-button {
+            background: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .secondary-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Lands Grid */
+        .lands-grid-section {
+            padding: 5rem 5%;
+            background: #f5f7fa;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .lands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .land-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .land-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .land-img {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .land-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .land-badge.sold {
+            background: #ff4757;
+            color: white;
+        }
+
+        .land-badge.featured {
+            background: var(--primary);
+            color: white;
+        }
+
+        .land-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .land-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            line-height: 1.3;
+        }
+
+        .land-location {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .land-location i {
+            color: var(--secondary);
+        }
+
+        .land-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .land-features {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .land-feature {
+            text-align: center;
+            flex: 1;
+            padding: 0 0.5rem;
+        }
+
+        .land-feature i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .land-feature p {
+            font-size: 0.8rem;
+            color: var(--gray);
+            line-height: 1.2;
+            min-height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .land-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .land-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .action-button {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .action-button.primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .action-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-button.primary:hover {
+            background: var(--secondary);
+            color: var(--dark);
+        }
+
+        .action-button.secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .pagination-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+        }
+
+        .pagination-button:hover,
+        .pagination-button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pagination-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-button.disabled:hover {
+            background: white;
+            color: var(--primary);
+            border-color: #e0e0e0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .footer-column p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-column ul li a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .lands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .lands-hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .lands-hero {
+                height: 50vh;
+                margin-top: 70px;
+            }
+            
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .land-feature p {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--primary);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            nav ul.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            nav ul li {
+                margin: 1rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .lands-hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .lands-hero-content p {
+                font-size: 1rem;
+            }
+            
+            .lands-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-buttons {
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .lands-hero {
+                height: 40vh;
+                margin-top: 60px;
+            }
+            
+            .lands-hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .land-actions {
+                flex-direction: row;
+            }
+            
+            .land-feature p {
+                font-size: 0.7rem;
+                min-height: 2rem;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 400px) {
+            .land-actions {
+                flex-direction: column;
+            }
+            
+            .land-feature p {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-bee">
+                <div class="bee-body"></div>
+                <div class="bee-wing left"></div>
+                <div class="bee-wing right"></div>
+            </div>
+            <div class="loader-logo">Land<span>Lanka</span></div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo"><i class="fas fa-mountain"></i>Land<span>Lanka</span></a>
+        <div class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="lands.html" class="active">Our Lands</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="lands-hero">
+        <div class="lands-hero-content">
+            <h1>Discover Premium Lands in Sri Lanka</h1>
+            <p>Explore our exclusive collection of 20+ premium properties across Sri Lanka. From beachfront plots to hill country estates, find your perfect investment opportunity.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <h2 class="filter-title">Find Your Perfect Land</h2>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="location">Location</label>
+                    <select id="location" class="filter-select">
+                        <option value="all">All Locations</option>
+                        <option value="colombo">Colombo</option>
+                        <option value="galle">Galle</option>
+                        <option value="kandy">Kandy</option>
+                        <option value="nuwaraeliya">Nuwara Eliya</option>
+                        <option value="matara">Matara</option>
+                        <option value="trincomalee">Trincomalee</option>
+                        <option value="anuradhapura">Anuradhapura</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="type">Property Type</label>
+                    <select id="type" class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="agricultural">Agricultural</option>
+                        <option value="beachfront">Beachfront</option>
+                        <option value="mountain">Mountain View</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="size">Size (Acres)</label>
+                    <select id="size" class="filter-select">
+                        <option value="all">Any Size</option>
+                        <option value="0-1">0 - 1 Acre</option>
+                        <option value="1-5">1 - 5 Acres</option>
+                        <option value="5-10">5 - 10 Acres</option>
+                        <option value="10+">10+ Acres</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="price">Price Range</label>
+                    <select id="price" class="filter-select">
+                        <option value="all">Any Price</option>
+                        <option value="0-50000">Under $50,000</option>
+                        <option value="50000-100000">$50,000 - $100,000</option>
+                        <option value="100000-250000">$100,000 - $250,000</option>
+                        <option value="250000-500000">$250,000 - $500,000</option>
+                        <option value="500000+">$500,000+</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-actions">
+                <div class="filter-results">
+                    Showing <span id="propertyCount">12</span> of <span id="totalProperties">20</span> Properties
+                </div>
+                <div class="filter-buttons">
+                    <button class="cta-button secondary-button" id="resetFilters">Reset Filters</button>
+                    <button class="cta-button" id="applyFilters">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lands Grid -->
+    <section class="lands-grid-section" id="lands">
+        <div class="section-title">
+            <h2>Featured Properties</h2>
+            <p>Browse our premium selection of lands available across Sri Lanka</p>
+        </div>
+        
+        <div class="lands-grid" id="landsGrid">
+            <!-- Land cards will be dynamically rendered here -->
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be dynamically generated -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>LandLanka</h3>
+                <p>Sri Lanka's premier land sales company with over 15 years of excellence in real estate.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lands.html">Our Lands</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Property Types</h3>
+                <ul>
+                    <li><a href="lands.html">Beachfront Lands</a></li>
+                    <li><a href="lands.html">Commercial Plots</a></li>
+                    <li><a href="lands.html">Agricultural Lands</a></li>
+                    <li><a href="lands.html">Hill Country Properties</a></li>
+                    <li><a href="lands.html">Residential Plots</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> 123 Galle Road, Colombo 03</a></li>
+                    <li><a href="tel:+94112345678"><i class="fas fa-phone"></i> +94 112 345 678</a></li>
+                    <li><a href="mailto:info@landlanka.com"><i class="fas fa-envelope"></i> info@landlanka.com</a></li>
+                    <li><a href="contact.html"><i class="fas fa-clock"></i> Mon - Sat: 9:00 AM - 6:00 PM</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear">2023</span> LandLanka. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #d4af37;"></i> for Sri Lanka</p>
+        </div>
+    </footer>
+
+    <script>
+        // Land data array
+        const landsData = [
+            {
+                id: 1,
+                title: "Colombo City Center Plot",
+                location: "Colombo 07, Colombo",
+                description: "Prime 2.5-acre commercial plot in the heart of Colombo. Perfect for high-rise development or luxury mixed-use project.",
+                price: "$450,000",
+                size: "2.5 Acres",
+                type: "commercial",
+                category: "Commercial",
+                features: ["2.5 Acres", "Commercial", "Main Road"],
+                image: "https://images.unsplash.com/photo-1576941089067-2c3c901e126?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "colombo",
+                dataType: "commercial",
+                dataSize: "1-5",
+                dataPrice: "250000-500000"
+            },
+            {
+                id: 2,
+                title: "Galle Beachfront Paradise",
+                location: "Unawatuna, Galle",
+                description: "Stunning 0.75-acre beachfront property with direct access to sandy beach. Ideal for boutique hotel or luxury villa.",
+                price: "$180,000",
+                size: "0.75 Acres",
+                type: "beachfront",
+                category: "Beachfront",
+                features: ["0.75 Acres", "Beachfront", "Ocean View"],
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "Featured",
+                badgeClass: "featured",
+                dataLocation: "galle",
+                dataType: "beachfront",
+                dataSize: "0-1",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 3,
+                title: "Kandy Tea Plantation",
+                location: "Peradeniya, Kandy",
+                description: "12-acre working tea estate with processing factory, worker quarters, and established tea bushes. Turnkey operation.",
+                price: "$380,000",
+                size: "12 Acres",
+                type: "agricultural",
+                category: "Tea Estate",
+                features: ["12 Acres", "Tea Estate", "Factory"],
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "kandy",
+                dataType: "agricultural",
+                dataSize: "10+",
+                dataPrice: "250000-500000"
+            },
+            {
+                id: 4,
+                title: "Nuwara Eliya Hill Station",
+                location: "Nuwara Eliya",
+                description: "3-acre property with panoramic mountain views in Sri Lanka's famous hill country. Perfect for holiday resort.",
+                price: "$220,000",
+                size: "3 Acres",
+                type: "mountain",
+                category: "Mountain View",
+                features: ["3 Acres", "Mountain View", "Cool Climate"],
+                image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "nuwaraeliya",
+                dataType: "mountain",
+                dataSize: "1-5",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 5,
+                title: "Matara Coastal Plot",
+                location: "Polhena, Matara",
+                description: "Beautiful 0.5-acre coastal plot with lagoon view. Ready for residential development with all utilities available.",
+                price: "$85,000",
+                size: "0.5 Acres",
+                type: "beachfront",
+                category: "Lagoon View",
+                features: ["0.5 Acres", "Lagoon View", "Utilities Ready"],
+                image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "Featured",
+                badgeClass: "featured",
+                dataLocation: "matara",
+                dataType: "beachfront",
+                dataSize: "0-1",
+                dataPrice: "50000-100000"
+            },
+            {
+                id: 6,
+                title: "Borella Residential Plot",
+                location: "Borella, Colombo",
+                description: "Prime 0.25-acre residential plot in established neighborhood. Walking distance to schools, hospitals, and shopping.",
+                price: "$75,000",
+                size: "0.25 Acres",
+                type: "residential",
+                category: "Residential",
+                features: ["0.25 Acres", "Residential", "Near Amenities"],
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "colombo",
+                dataType: "residential",
+                dataSize: "0-1",
+                dataPrice: "50000-100000"
+            },
+            {
+                id: 7,
+                title: "Trincomalee Bay View",
+                location: "Nilaveli, Trincomalee",
+                description: "2-acre beachfront property overlooking Trincomalee Bay. White sandy beach, crystal clear water, perfect for resort.",
+                price: "$190,000",
+                size: "2 Acres",
+                type: "beachfront",
+                category: "Sandy Beach",
+                features: ["2 Acres", "Sandy Beach", "Bay View"],
+                image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "trincomalee",
+                dataType: "beachfront",
+                dataSize: "1-5",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 8,
+                title: "Anuradhapura Paddy Land",
+                location: "Anuradhapura",
+                description: "8-acre fertile paddy land with irrigation system. Perfect for rice cultivation or organic farming. Includes water well.",
+                price: "$65,000",
+                size: "8 Acres",
+                type: "agricultural",
+                category: "Fertile Soil",
+                features: ["8 Acres", "Irrigation", "Fertile Soil"],
+                image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "Featured",
+                badgeClass: "featured",
+                dataLocation: "anuradhapura",
+                dataType: "agricultural",
+                dataSize: "5-10",
+                dataPrice: "50000-100000"
+            },
+            {
+                id: 9,
+                title: "Kandy Lake View Plot",
+                location: "Kandy City",
+                description: "0.33-acre residential plot with partial lake view. In quiet neighborhood near Temple of the Tooth and city center.",
+                price: "$88,000",
+                size: "0.33 Acres",
+                type: "residential",
+                category: "Lake View",
+                features: ["0.33 Acres", "Lake View", "City Center"],
+                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "kandy",
+                dataType: "residential",
+                dataSize: "0-1",
+                dataPrice: "50000-100000"
+            },
+            {
+                id: 10,
+                title: "Galle Fort Commercial Space",
+                location: "Galle Fort, Galle",
+                description: "0.2-acre commercial plot inside UNESCO World Heritage Site. Perfect for boutique hotel, restaurant, or art gallery.",
+                price: "$150,000",
+                size: "0.2 Acres",
+                type: "commercial",
+                category: "Heritage Site",
+                features: ["0.2 Acres", "Heritage Site", "Commercial"],
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "galle",
+                dataType: "commercial",
+                dataSize: "0-1",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 11,
+                title: "Nuwara Eliya Vegetable Farm",
+                location: "Nuwara Eliya",
+                description: "6-acre established vegetable farm with greenhouses and packing facility. Producing for local and export markets.",
+                price: "$175,000",
+                size: "6 Acres",
+                type: "agricultural",
+                category: "Greenhouses",
+                features: ["6 Acres", "Farm Equipment", "Greenhouses"],
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "nuwaraeliya",
+                dataType: "agricultural",
+                dataSize: "5-10",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 12,
+                title: "Colombo Port City Plot",
+                location: "Port City, Colombo",
+                description: "0.5-acre plot in Colombo's new financial district. High investment potential with sea view and modern infrastructure.",
+                price: "$420,000",
+                size: "0.5 Acres",
+                type: "commercial",
+                category: "Sea View",
+                features: ["0.5 Acres", "Sea View", "Financial District"],
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "Featured",
+                badgeClass: "featured",
+                dataLocation: "colombo",
+                dataType: "commercial",
+                dataSize: "0-1",
+                dataPrice: "250000-500000"
+            },
+            {
+                id: 13,
+                title: "Matara Suburban Plot",
+                location: "Matara Town",
+                description: "0.15-acre residential plot in developing suburban area. All utilities available, quiet neighborhood, good for starter home.",
+                price: "$35,000",
+                size: "0.15 Acres",
+                type: "residential",
+                category: "All Utilities",
+                features: ["0.15 Acres", "Residential", "All Utilities"],
+                image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "matara",
+                dataType: "residential",
+                dataSize: "0-1",
+                dataPrice: "0-50000"
+            },
+            {
+                id: 14,
+                title: "Trincomalee Coconut Grove",
+                location: "Trincomalee",
+                description: "3-acre coconut plantation with beach access. Mature coconut trees producing regularly, includes small beach house.",
+                price: "$165,000",
+                size: "3 Acres",
+                type: "beachfront",
+                category: "Coconut Plantation",
+                features: ["3 Acres", "Coconut Plantation", "Beach House"],
+                image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "trincomalee",
+                dataType: "beachfront",
+                dataSize: "1-5",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 15,
+                title: "Anuradhapura Farmland",
+                location: "Anuradhapura",
+                description: "15-acre agricultural land with irrigation channel access. Suitable for large-scale farming or agro-tourism project.",
+                price: "$95,000",
+                size: "15 Acres",
+                type: "agricultural",
+                category: "Farm Ready",
+                features: ["15 Acres", "Irrigation", "Farm Ready"],
+                image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "anuradhapura",
+                dataType: "agricultural",
+                dataSize: "10+",
+                dataPrice: "50000-100000"
+            },
+            {
+                id: 16,
+                title: "Kandy Mountain Retreat",
+                location: "Knuckles Range, Kandy",
+                description: "4-acre property in Knuckles Mountain Range. Breathtaking views, waterfalls nearby, perfect for eco-tourism resort.",
+                price: "$210,000",
+                size: "4 Acres",
+                type: "mountain",
+                category: "Mountain Range",
+                features: ["4 Acres", "Mountain Range", "Waterfalls"],
+                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "kandy",
+                dataType: "mountain",
+                dataSize: "1-5",
+                dataPrice: "100000-250000"
+            },
+            {
+                id: 17,
+                title: "Galle Suburban Plot",
+                location: "Galle",
+                description: "0.3-acre residential plot in developing Galle suburb. Close to schools, hospitals, and 15 minutes from beach.",
+                price: "$55,000",
+                size: "0.3 Acres",
+                type: "residential",
+                category: "Near Schools",
+                features: ["0.3 Acres", "Residential", "Near Schools"],
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "galle",
+                dataType: "residential",
+                dataSize: "0-1",
+                dataPrice: "50000-100000"
+            },
+            {
+                id: 18,
+                title: "Nuwara Eliya Small Plot",
+                location: "Nuwara Eliya Town",
+                description: "0.1-acre plot in Nuwara Eliya town center. Perfect for holiday cottage or small guest house in hill country.",
+                price: "$28,000",
+                size: "0.1 Acres",
+                type: "mountain",
+                category: "Cool Climate",
+                features: ["0.1 Acres", "Cool Climate", "Town Center"],
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "For Sale",
+                badgeClass: "",
+                dataLocation: "nuwaraeliya",
+                dataType: "mountain",
+                dataSize: "0-1",
+                dataPrice: "0-50000"
+            },
+            {
+                id: 19,
+                title: "Colombo Mixed-Use Development",
+                location: "Colombo 05",
+                description: "3.5-acre prime development land approved for mixed-use project. Zoned for residential, commercial, and hotel use.",
+                price: "$750,000",
+                size: "3.5 Acres",
+                type: "commercial",
+                category: "Mixed-Use",
+                features: ["3.5 Acres", "Mixed-Use", "Approved Plans"],
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "Featured",
+                badgeClass: "featured",
+                dataLocation: "colombo",
+                dataType: "commercial",
+                dataSize: "1-5",
+                dataPrice: "500000+"
+            },
+            {
+                id: 20,
+                title: "Mirissa Beachfront (Sold)",
+                location: "Mirissa, Matara",
+                description: "0.8-acre beachfront property in Mirissa, famous for whale watching. Recently sold - similar properties available.",
+                price: "$195,000",
+                size: "0.8 Acres",
+                type: "beachfront",
+                category: "Whale Watching",
+                features: ["0.8 Acres", "Whale Watching", "Beachfront"],
+                image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                badge: "Sold",
+                badgeClass: "sold",
+                dataLocation: "matara",
+                dataType: "beachfront",
+                dataSize: "0-1",
+                dataPrice: "100000-250000"
+            }
+        ];
+
+        // Pagination variables
+        let currentPage = 1;
+        const landsPerPage = 12;
+        let filteredLands = [...landsData];
+
+        // Loader
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+            }, 2000);
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('nav ul');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Function to render land cards
+        function renderLands() {
+            const landsGrid = document.getElementById('landsGrid');
+            landsGrid.innerHTML = '';
+            
+            const startIndex = (currentPage - 1) * landsPerPage;
+            const endIndex = startIndex + landsPerPage;
+            const landsToShow = filteredLands.slice(startIndex, endIndex);
+            
+            landsToShow.forEach(land => {
+                const landCard = document.createElement('div');
+                landCard.className = 'land-card';
+                landCard.setAttribute('data-location', land.dataLocation);
+                landCard.setAttribute('data-type', land.dataType);
+                landCard.setAttribute('data-size', land.dataSize);
+                landCard.setAttribute('data-price', land.dataPrice);
+                
+                const featuresHTML = land.features.map(feature => `
+                    <div class="land-feature">
+                        <i class="fas fa-${getFeatureIcon(feature)}"></i>
+                        <p>${feature}</p>
+                    </div>
+                `).join('');
+                
+                landCard.innerHTML = `
+                    <div class="land-img" style="background-image: url('${land.image}')">
+                        <div class="land-badge ${land.badgeClass}">${land.badge}</div>
+                    </div>
+                    <div class="land-info">
+                        <h3>${land.title}</h3>
+                        <div class="land-location">
+                            <i class="fas fa-map-marker-alt"></i> ${land.location}
+                        </div>
+                        <p class="land-description">${land.description}</p>
+                        
+                        <div class="land-features">
+                            ${featuresHTML}
+                        </div>
+                        
+                        <div class="land-price">${land.price}</div>
+                        
+                        <div class="land-actions">
+                            <a href="contact.html?property=${land.id}" class="action-button primary">View More</a>
+                            <a href="tel:+94112345678" class="action-button secondary">Call Now</a>
+                        </div>
+                    </div>
+                `;
+                
+                landsGrid.appendChild(landCard);
+            });
+            
+            // Update property count
+            const landsToShowCount = landsToShow.length;
+            document.getElementById('propertyCount').textContent = landsToShowCount;
+            document.getElementById('totalProperties').textContent = filteredLands.length;
+            
+            // Render pagination
+            renderPagination();
+            
+            // Animate cards
+            animateCards();
+        }
+
+        // Helper function to get feature icons
+        function getFeatureIcon(feature) {
+            const iconMap = {
+                'Acres': 'expand-arrows-alt',
+                'Commercial': 'vector-square',
+                'Main Road': 'road',
+                'Beachfront': 'water',
+                'Ocean View': 'sun',
+                'Tea Estate': 'leaf',
+                'Factory': 'building',
+                'Mountain View': 'mountain',
+                'Cool Climate': 'temperature-low',
+                'Lagoon View': 'water',
+                'Utilities Ready': 'bolt',
+                'Residential': 'home',
+                'Near Amenities': 'store',
+                'Sandy Beach': 'umbrella-beach',
+                'Bay View': 'anchor',
+                'Irrigation': 'tint',
+                'Fertile Soil': 'seedling',
+                'Lake View': 'water',
+                'City Center': 'city',
+                'Heritage Site': 'landmark',
+                'Sea View': 'water',
+                'Financial District': 'briefcase',
+                'All Utilities': 'bolt',
+                'Coconut Plantation': 'tree',
+                'Beach House': 'home',
+                'Farm Ready': 'tractor',
+                'Mountain Range': 'mountain',
+                'Waterfalls': 'water',
+                'Near Schools': 'school',
+                'Town Center': 'store',
+                'Mixed-Use': 'building',
+                'Approved Plans': 'check-circle',
+                'Whale Watching': 'whale',
+                'Farm Equipment': 'tractor',
+                'Greenhouses': 'seedling'
+            };
+            
+            for (const key in iconMap) {
+                if (feature.includes(key)) {
+                    return iconMap[key];
+                }
+            }
+            return 'info-circle';
+        }
+
+        // Function to render pagination
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(filteredLands.length / landsPerPage);
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <button class="pagination-button ${currentPage === 1 ? 'disabled' : ''}" 
+                        onclick="changePage(${currentPage - 1})" 
+                        ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `
+                        <button class="pagination-button ${currentPage === i ? 'active' : ''}" 
+                                onclick="changePage(${i})">
+                            ${i}
+                        </button>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += `<span class="pagination-dots">...</span>`;
+                }
+            }
+            
+            // Next button
+            paginationHTML += `
+                <button class="pagination-button ${currentPage === totalPages ? 'disabled' : ''}" 
+                        onclick="changePage(${currentPage + 1})" 
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Function to change page
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(filteredLands.length / landsPerPage)) return;
+            
+            currentPage = page;
+            renderLands();
+            
+            // Scroll to top of lands grid
+            document.getElementById('lands').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Function to animate cards
+        function animateCards() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.land-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(card);
+            });
+        }
+
+        // Property Filter Functionality
+        const locationFilter = document.getElementById('location');
+        const typeFilter = document.getElementById('type');
+        const sizeFilter = document.getElementById('size');
+        const priceFilter = document.getElementById('price');
+        const applyFiltersBtn = document.getElementById('applyFilters');
+        const resetFiltersBtn = document.getElementById('resetFilters');
+
+        function filterProperties() {
+            const locationValue = locationFilter.value;
+            const typeValue = typeFilter.value;
+            const sizeValue = sizeFilter.value;
+            const priceValue = priceFilter.value;
+            
+            filteredLands = landsData.filter(land => {
+                const locationMatch = locationValue === 'all' || land.dataLocation === locationValue;
+                const typeMatch = typeValue === 'all' || land.dataType === typeValue;
+                const sizeMatch = sizeValue === 'all' || land.dataSize === sizeValue;
+                const priceMatch = priceValue === 'all' || land.dataPrice === priceValue;
+                
+                return locationMatch && typeMatch && sizeMatch && priceMatch;
+            });
+            
+            currentPage = 1; // Reset to first page after filtering
+            renderLands();
+        }
+
+        function resetFilters() {
+            locationFilter.value = 'all';
+            typeFilter.value = 'all';
+            sizeFilter.value = 'all';
+            priceFilter.value = 'all';
+            filteredLands = [...landsData];
+            currentPage = 1;
+            renderLands();
+        }
+
+        applyFiltersBtn.addEventListener('click', filterProperties);
+        resetFiltersBtn.addEventListener('click', resetFilters);
+
+        // Current year for footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Initialize
+        renderLands();
+        
+        // Make changePage function available globally
+        window.changePage = changePage;
+    </script>
+</body>
+</html>
